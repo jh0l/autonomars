@@ -1,0 +1,35 @@
+[package]
+name = "autonomars"
+version = "0.0.1"
+authors = ["www.jh0.co"]
+readme = "../README.md"
+keywords = [ "physics", "dynamics", "rigid", "real-time", "joints" ]
+license = "Apache-2.0"
+edition = "2021"
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# [lib]
+# path = "../src/lib.rs"
+# required-features = [ "dim3" ]
+
+# Enables the AsyncCollider and AsyncSceneCollider components that wait for specific
+# assets to be loaded before creating the actual Collider.
+# See https://github.com/dimforge/bevy_rapier/issues/296 for a workaround on how
+# to use this when using bevy headless.
+
+[dependencies]
+bevy = { version = "0.10.0", features = ["jpeg", "dynamic_linking"] }
+bevy_rapier3d = { version = "0.21", features = ["serde-serialize"] }
+
+# Enable a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+# [target.x86_64-unknown-linux-gnu]
+# linker = "clang"
+# rustflags = ["-C", "link-arg=-fuse-ld=/usr/bin/mold", "-Zshare-generics=y"]
