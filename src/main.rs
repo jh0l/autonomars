@@ -5,7 +5,10 @@ use bevy::{
     render::render_resource::{Extent3d, TextureDimension, TextureFormat},
 };
 
-use bevy_rapier3d::prelude::*;
+use bevy_rapier3d::{na::Vector3, prelude::*};
+
+#[derive(Component)]
+struct Wheel(String, f32);
 
 fn main() {
     App::new()
@@ -17,6 +20,8 @@ fn main() {
         .add_startup_system(setup_map)
         .add_startup_system(setup_physics)
         .add_system(print_ball_altitude)
+        .add_system(bevy::window::close_on_esc)
+        .add_system(rover_wheel_control)
         .run();
 }
 
@@ -107,10 +112,15 @@ fn setup_physics(
     mut meshes: ResMut<Assets<Mesh>>,
     mut images: ResMut<Assets<Image>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    mut rapier_config: ResMut<RapierConfiguration>,
 ) {
+    rapier_config.gravity = Vec3::new(0.0, -90., 0.0);
     /* Create the ground. */
     commands
-        .spawn(Collider::cuboid(100.0, 0.1, 100.0))
+        .spawn((
+            Collider::cuboid(100.0, 0.1, 100.0),
+            Friction::coefficient(1.0),
+        ))
         .insert(TransformBundle::from(Transform::from_xyz(0.0, 0.0, 0.0)));
 
     /* Create the bouncing ball with a PbrBundle using a sphere mesh */
@@ -120,27 +130,14 @@ fn setup_physics(
         ..default()
     });
 
-    /* Create the bouncing ball with a ball PbrBundle using a sphere mesh */
-    // commands
-    //     .spawn(RigidBody::Dynamic)
-    //     .insert(Collider::ball(0.5))
-    //     .insert(Restitution::coefficient(0.7))
-    //     .insert(PbrBundle {
-    //         // sphere mesh shape
-    //         mesh: sphere_mesh.clone(),
-    //         material: debug_material.clone(),
-    //         ..default()
-    //     })
-    //     .insert(TransformBundle::from(Transform::from_xyz(0.0, 5.0, 0.0)));
-
     /* create bouncing box */
 
-    let drop_height = 0.7;
+    let drop_height = 5.;
 
     let scale = 0.5;
     let box_x = 1.2 * scale;
     let box_y = 0.5 * scale;
-    let box_z = 1.7 * scale;
+    let box_z = 1.9 * scale;
 
     let box_mesh = meshes.add(
         shape::Box {
@@ -155,16 +152,19 @@ fn setup_physics(
         .unwrap(),
     );
     let cuboid = commands
-        .spawn(RigidBody::Dynamic)
-        .insert(Collider::cuboid(box_x, box_y, box_z))
-        .insert(CollisionGroups::new(Group::GROUP_2, Group::GROUP_2))
-        .insert(Restitution::coefficient(0.0))
-        .insert(PbrBundle {
-            // sphere mesh shape
-            mesh: box_mesh.clone(),
-            material: debug_material.clone(),
-            ..default()
-        })
+        .spawn((
+            RigidBody::Dynamic,
+            Collider::cuboid(box_x, box_y, box_z),
+            CollisionGroups::new(Group::GROUP_2, Group::GROUP_2),
+            Friction::coefficient(0.0),
+            PbrBundle {
+                // sphere mesh shape
+                mesh: box_mesh.clone(),
+                material: materials.add(Color::rgb_u8(240, 95, 36).into()),
+                ..default()
+            },
+            Sleeping::disabled(),
+        ))
         .insert(TransformBundle::from(Transform::from_xyz(
             0.0,
             drop_height,
@@ -187,52 +187,67 @@ fn setup_physics(
         .try_into()
         .unwrap(),
     );
-
+    let motor_velocity = 0.;
+    let motor_factor = 30.0;
     /* create a RevoluteJoint based sphere wheel for the box */
-    let right_joint = RevoluteJointBuilder::new(Vec3::X)
-        .local_anchor1(Vec3::new(
-            drive_axle_width,
-            drive_axle_height,
-            drive_axle_offset,
-        ))
-        .local_anchor2(Vec3::new(0.0, 0.0, 0.0));
     commands
-        .spawn(RigidBody::Dynamic)
-        .insert(Collider::ball(wheel_size))
-        .insert(CollisionGroups::new(Group::GROUP_3, Group::GROUP_3))
-        .insert(Friction::coefficient(0.7))
-        .insert(PbrBundle {
-            // sphere mesh shape
-            mesh: sphere_mesh.clone(),
-            material: debug_material.clone(),
-            ..default()
-        })
-        .insert(ImpulseJoint::new(cuboid, right_joint))
+        .spawn((
+            RigidBody::Dynamic,
+            Collider::ball(wheel_size),
+            CollisionGroups::new(Group::GROUP_3, Group::GROUP_3),
+            Friction::coefficient(1.),
+            PbrBundle {
+                // sphere mesh shape
+                mesh: sphere_mesh.clone(),
+                material: debug_material.clone(),
+                ..default()
+            },
+            ImpulseJoint::new(
+                cuboid,
+                RevoluteJointBuilder::new(Vec3::X)
+                    .local_anchor1(Vec3::new(
+                        -drive_axle_width,
+                        drive_axle_height,
+                        drive_axle_offset,
+                    ))
+                    .local_anchor2(Vec3::new(0.0, 0.0, 0.0))
+                    .motor_velocity(motor_velocity, motor_factor),
+            ),
+            Wheel("left".into(), 0.),
+            Sleeping::disabled(),
+        ))
         .insert(TransformBundle::from(Transform::from_xyz(
             0.0,
             drop_height,
             0.0,
         )));
 
-    let left_joint = RevoluteJointBuilder::new(Vec3::X)
-        .local_anchor1(Vec3::new(
-            -drive_axle_width,
-            drive_axle_height,
-            drive_axle_offset,
-        ))
-        .local_anchor2(Vec3::new(0.0, 0.0, 0.0));
     commands
-        .spawn(RigidBody::Dynamic)
-        .insert(Collider::ball(wheel_size))
-        .insert(CollisionGroups::new(Group::GROUP_4, Group::GROUP_4))
-        .insert(Friction::coefficient(0.7))
-        .insert(PbrBundle {
-            // sphere mesh shape
-            mesh: sphere_mesh.clone(),
-            material: debug_material.clone(),
-            ..default()
-        })
-        .insert(ImpulseJoint::new(cuboid, left_joint))
+        .spawn((
+            RigidBody::Dynamic,
+            Collider::ball(wheel_size),
+            CollisionGroups::new(Group::GROUP_4, Group::GROUP_4),
+            Friction::coefficient(1.),
+            PbrBundle {
+                // sphere mesh shape
+                mesh: sphere_mesh.clone(),
+                material: debug_material.clone(),
+                ..default()
+            },
+            ImpulseJoint::new(
+                cuboid,
+                RevoluteJointBuilder::new(Vec3::X)
+                    .local_anchor1(Vec3::new(
+                        drive_axle_width,
+                        drive_axle_height,
+                        drive_axle_offset,
+                    ))
+                    .local_anchor2(Vec3::new(0.0, 0.0, 0.0))
+                    .motor_velocity(motor_velocity, motor_factor),
+            ),
+            Wheel("right".into(), 0.),
+            Sleeping::disabled(),
+        ))
         .insert(TransformBundle::from(Transform::from_xyz(
             0.0,
             drop_height,
@@ -241,8 +256,48 @@ fn setup_physics(
 }
 
 fn print_ball_altitude(positions: Query<&Transform, With<RigidBody>>) {
-    for transform in positions.iter() {
-        println!("Ball altitude: {}", transform.translation.y);
+    // for transform in positions.iter() {
+    //     println!("Ball altitude: {}", transform.translation.y);
+    // }
+}
+const FACTOR: f32 = 150.;
+const VEL: f32 = 10.;
+fn rover_wheel_control(
+    keyboard_input: Res<Input<KeyCode>>,
+    mut wheels: Query<(&Wheel, &mut ImpulseJoint)>,
+) {
+    let fwd = keyboard_input.any_pressed([KeyCode::W, KeyCode::Up]);
+    let bck = keyboard_input.any_pressed([KeyCode::S, KeyCode::Down]);
+    let lft = keyboard_input.any_pressed([KeyCode::A, KeyCode::Left]);
+    let rgt = keyboard_input.any_pressed([KeyCode::D, KeyCode::Right]);
+    let mut left = 0.;
+    let mut right = 0.;
+    if fwd {
+        left += 1.;
+        right += 1.;
+    }
+    if bck {
+        left -= 1.;
+        right -= 1.;
+    }
+    if lft {
+        left -= 1.;
+        right += 1.;
+    }
+    if rgt {
+        left += 1.;
+        right -= 1.;
+    }
+    for (wheel, mut motor) in &mut wheels {
+        let rev = motor.data.as_revolute_mut();
+        if let Some(rev) = rev {
+            let vel = match wheel.0.as_str() {
+                "left" => left,
+                "right" => right,
+                _ => 0.,
+            };
+            rev.set_motor_velocity(vel * -VEL, FACTOR);
+        }
     }
 }
 

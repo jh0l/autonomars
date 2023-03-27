@@ -1,0 +1,432 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'autonomars'",
+            "cargo": {
+                "args": ["build", "--bin=autonomars", "--package=autonomars"],
+                "filter": {
+                    "name": "autonomars",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'autonomars'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=autonomars",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "autonomars",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'ray_casting3'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=ray_casting3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "ray_casting3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'ray_casting3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=ray_casting3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "ray_casting3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'despawn3'",
+            "cargo": {
+                "args": ["build", "--example=despawn3", "--package=autonomars"],
+                "filter": {
+                    "name": "despawn3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'despawn3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=despawn3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "despawn3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'custom_system_setup3'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=custom_system_setup3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "custom_system_setup3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'custom_system_setup3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=custom_system_setup3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "custom_system_setup3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'boxes3'",
+            "cargo": {
+                "args": ["build", "--example=boxes3", "--package=autonomars"],
+                "filter": {
+                    "name": "boxes3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'boxes3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=boxes3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "boxes3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'static_trimesh3'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=static_trimesh3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "static_trimesh3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'static_trimesh3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=static_trimesh3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "static_trimesh3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'joints_despawn3'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=joints_despawn3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "joints_despawn3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'joints_despawn3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=joints_despawn3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "joints_despawn3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'events3'",
+            "cargo": {
+                "args": ["build", "--example=events3", "--package=autonomars"],
+                "filter": {
+                    "name": "events3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'events3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=events3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "events3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'locked_rotations3'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=locked_rotations3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "locked_rotations3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'locked_rotations3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=locked_rotations3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "locked_rotations3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'multiple_colliders3'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=multiple_colliders3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "multiple_colliders3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'multiple_colliders3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=multiple_colliders3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "multiple_colliders3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'joints3'",
+            "cargo": {
+                "args": ["build", "--example=joints3", "--package=autonomars"],
+                "filter": {
+                    "name": "joints3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'joints3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=joints3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "joints3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'contact_filter3'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=contact_filter3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "contact_filter3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'contact_filter3'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=contact_filter3",
+                    "--package=autonomars"
+                ],
+                "filter": {
+                    "name": "contact_filter3",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

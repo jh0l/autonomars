@@ -19,7 +19,8 @@ edition = "2021"
 # to use this when using bevy headless.
 
 [dependencies]
-bevy = { version = "0.10.0", features = ["jpeg", "dynamic_linking"] }
+# bevy = { version = "0.10.0", features = ["dynamic_linking"] }
+bevy = { version = "0.10.0" }
 bevy_rapier3d = { version = "0.21", features = ["serde-serialize"] }
 
 # Enable a small amount of optimization in debug mode
