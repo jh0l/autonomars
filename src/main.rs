@@ -19,7 +19,6 @@ fn main() {
         .add_startup_system(setup_graphics)
         .add_startup_system(setup_map)
         .add_startup_system(setup_physics)
-        .add_system(print_ball_altitude)
         .add_system(bevy::window::close_on_esc)
         .add_system(rover_wheel_control)
         .run();
@@ -255,11 +254,6 @@ fn setup_physics(
         )));
 }
 
-fn print_ball_altitude(positions: Query<&Transform, With<RigidBody>>) {
-    // for transform in positions.iter() {
-    //     println!("Ball altitude: {}", transform.translation.y);
-    // }
-}
 const FACTOR: f32 = 150.;
 const VEL: f32 = 10.;
 fn rover_wheel_control(
